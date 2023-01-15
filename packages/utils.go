@@ -29,7 +29,6 @@ func RFCRoundUp(rfc string) string {
         panic(err)
     }
     t = t.Truncate(time.Hour).Add(time.Hour - 1)
-	fmt.Println("ROUNDUp",t.Format(time.RFC3339))
     return t.Format(time.RFC3339)
 }
 
@@ -39,7 +38,6 @@ func RFCRoundDown(rfc string) string {
         panic(err)
     }
     t = t.Truncate(time.Hour)
-	fmt.Println("ROUNDDown",t.Format(time.RFC3339))
     return t.Format(time.RFC3339)
 }
 
