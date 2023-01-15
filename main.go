@@ -22,6 +22,8 @@ func main() {
 		return
 	}
 	arg1, arg2 := os.Args[1], os.Args[2]
+	// // This will check the answer against the stream
+	packages.CheckAns(arg1, arg2)
 	rfc, err := time.Parse(time.RFC3339, arg1)
 	CheckError(err)
 	rfc2 , err := time.Parse(time.RFC3339, arg2)
@@ -31,17 +33,18 @@ func main() {
 		return
 	}
 	if rfc2.Minute() != 0 || rfc2.Second() != 0 || rfc.Minute() != 0 || rfc.Second() != 0{
-		fmt.Fprintln(os.Stderr, "Warning! if the Minute or Seconds on the RFC timestamps provided are not exactly 0, then it will not return the expected HOURLY average value because the entire hour was not fetch. Only the exact average based on the parameters. If it needed to be rounded up/down, please specify and I can change the code as needed. I scanned the instrutions and it doesn't say whether I should input this or not.")
+		fmt.Fprintln(os.Stderr, "Warning! because Second and Minute are not '00' this means that the argument will be rounded up and rounded down respectively.")
+		//Instructions says to roundup and rounddown arg1 and arg2 respectively to get the entire hours, as I understood it. 
 	}
-	reqURL := fmt.Sprintf("https://tsserv.tinkermode.dev/data?begin=%s&end=%s", packages.RFCRoundDown(arg1), packages.RFCRoundUp(arg2) )
+
+	arg1 = packages.RFCRoundDown(arg1)
+	arg2 = packages.RFCRoundUp(arg2)
+	reqURL := fmt.Sprintf("https://tsserv.tinkermode.dev/data?begin=%s&end=%s", arg1, arg2)
 
 	TimeStampProccesser(reqURL, arg1, arg2)
 
 
 }
-
-
-
 
 
 func TimeStampProccesser(reqURL string, arg1 string, arg2 string){
@@ -89,10 +92,11 @@ func TimeStampProccesser(reqURL string, arg1 string, arg2 string){
 		
 
 	}
-	bucketValue = append(bucketValue, value)
+	// bucketValue = append(bucketValue, value)
 	packages.CreateBucket(year,month, day, bucketValue,hourCompare)
 	
-	packages.CheckAns(arg1, arg2)
+
+	
 
 }
 

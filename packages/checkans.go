@@ -7,7 +7,7 @@ import (
 )
 
 func CheckAns(arg1 string, arg2 string){
-	fmt.Printf("\n ans \n \n")
+	fmt.Printf("\n -----Ans Start------- \n \n")
 	ansURL := fmt.Sprintf("https://tsserv.tinkermode.dev/hourly?begin=%s&end=%s", arg1, arg2 )
 	responseAns , err := http.Get(ansURL)
 	CheckError(err)
